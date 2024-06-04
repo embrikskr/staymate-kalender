@@ -1,168 +1,131 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const prevPeriodButton1 = document.getElementById("prevPeriod1");
-    const nextPeriodButton1 = document.getElementById("nextPeriod1");
-    const calendarView1 = document.getElementById("calendarView1");
-    const calendarInfo1 = document.getElementById("calendarInfo1");
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    const prevPeriodButton2 = document.getElementById("prevPeriod2");
-    const nextPeriodButton2 = document.getElementById("nextPeriod2");
-    const calendarView2 = document.getElementById("calendarView2");
-    const calendarInfo2 = document.getElementById("calendarInfo2");
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
 
-    const planForm = document.getElementById("planForm");
+.container {
+    display: flex;
+    height: calc(100vh - 80px); /* Adjust height for header and footer */
+}
 
-    let currentDate1 = new Date();
-    let currentDate2 = new Date();
+aside {
+    width: 35%; /* Decreased width for each calendar */
+    background-color: #f4f4f4;
+    padding: 1rem;
+    border-right: 1px solid #ddd;
+}
 
-    function getMonthName(monthIndex) {
-        const monthNames = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-        return monthNames[monthIndex];
-    }
+main {
+    width: 30%; /* Width for form */
+    padding: 1rem;
+}
 
-    function getWeekStart(date) {
-        const start = new Date(date);
-        const day = start.getDay();
-        const diff = start.getDate() - day + (day === 0 ? -6 : 1);
-        start.setDate(diff);
-        return start;
-    }
+footer {
+    background-color: #f1f1f1;
+    padding: 1rem;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
 
-    function savePlans(calendar, plans) {
-        localStorage.setItem(`calendarPlans_${calendar}`, JSON.stringify(plans));
-    }
+button {
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 
-    function loadPlans(calendar) {
-        const plans = localStorage.getItem(`calendarPlans_${calendar}`);
-        return plans ? JSON.parse(plans) : {};
-    }
+button:hover {
+    background-color: #45a049;
+}
 
-    function renderWeekView(calendar, date) {
-        const plans = loadPlans(calendar);
-        const startOfWeek = getWeekStart(date);
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
+.calendar-buttons {
+    margin-bottom: 1rem;
+}
 
-        const calendarInfo = calendar === 'calendar1' ? calendarInfo1 : calendarInfo2;
-        const calendarView = calendar === 'calendar1' ? calendarView1 : calendarView2;
+#calendarView1, #calendarView2 {
+    min-height: 200px;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    background-color: white;
+}
 
-        calendarInfo.textContent = `Week of ${startOfWeek.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} - ${endOfWeek.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+.calendar-grid {
+    display: grid;
+    gap: 1px;
+}
 
-        calendarView.className = 'calendar-grid week-view';
-        calendarView.innerHTML = '';
-        const now = new Date();
+.week-view {
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(18, 1fr); /* 1 row for 0:00-8:00 and 17 rows for each hour from 8:00-24:00 */
+}
 
-        const days = [];
-        for (let i = 0; i < 7; i++) {
-            const day = new Date(startOfWeek);
-            day.setDate(startOfWeek.getDate() + i);
-            days.push(day);
-        }
+.week-view div {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+    text-align: center;
+}
 
-        for (let day of days) {
-            const earlyDiv = document.createElement('div');
-            earlyDiv.dataset.date = day.toISOString().split('T')[0];
-            earlyDiv.dataset.hour = 'early';
-            earlyDiv.textContent = `${day.toLocaleDateString('en-US', { weekday: 'short' })} 0:00-8:00`;
-            if (day.toISOString().split('T')[0] === now.toISOString().split('T')[0] && now.getHours() < 8) {
-                earlyDiv.classList.add('current-time-slot');
-            }
-            calendarView.appendChild(earlyDiv);
+.plan-item {
+    color: white;
+    text-align: center;
+}
 
-            for (let hour = 8; hour < 24; hour++) {
-                const dayHourDiv = document.createElement('div');
-                dayHourDiv.dataset.date = day.toISOString().split('T')[0];
-                dayHourDiv.dataset.hour = hour;
-                dayHourDiv.textContent = `${hour}:00`;
+.plan-item.red {
+    background-color: red;
+}
 
-                if (day.toISOString().split('T')[0] === now.toISOString().split('T')[0]) {
-                    if (hour === now.getHours()) {
-                        dayHourDiv.classList.add('current-time-slot');
-                    } else {
-                        dayHourDiv.classList.add('current-day');
-                    }
-                }
+.plan-item.yellow {
+    background-color: yellow;
+    color: black;
+}
 
-                const planKey = `${dayHourDiv.dataset.date}-${hour}`;
-                if (plans[planKey]) {
-                    dayHourDiv.classList.add('plan-item', plans[planKey].color);
-                    dayHourDiv.textContent = `${plans[planKey].description} (${plans[planKey].startTime} - ${plans[planKey].endTime})`;
-                }
+.plan-item.purple {
+    background-color: purple;
+}
 
-                calendarView.appendChild(dayHourDiv);
-            }
-        }
-    }
+.plan-item.green {
+    background-color: green;
+}
 
-    function addPlanToCalendar(calendar, date, startTime, endTime, description, color) {
-        const plans = loadPlans(calendar);
-        const dateStr = new Date(date).toISOString().split('T')[0];
-        const startHour = parseInt(startTime.split(':')[0]);
-        const endHour = parseInt(endTime.split(':')[0]);
+form {
+    margin-bottom: 2rem;
+}
 
-        if (startHour < 8) {
-            for (let hour = startHour; hour < Math.min(endHour, 8); hour++) {
-                const planKey = `${dateStr}-early`;
-                plans[planKey] = { date, startTime, endTime, description, color };
-            }
-            if (endHour > 8) {
-                for (let hour = 8; hour < endHour; hour++) {
-                    const planKey = `${dateStr}-${hour}`;
-                    plans[planKey] = { date, startTime, endTime, description, color };
-                }
-            }
-        } else {
-            for (let hour = startHour; hour < endHour; hour++) {
-                const planKey = `${dateStr}-${hour}`;
-                plans[planKey] = { date, startTime, endTime, description, color };
-            }
-        }
+form label {
+    display: block;
+    margin-top: 0.5rem;
+}
 
-        savePlans(calendar, plans);
-        if (calendar === 'calendar1') {
-            renderWeekView('calendar1', currentDate1);
-        } else {
-            renderWeekView('calendar2', currentDate2);
-        }
-    }
+form input, form select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
 
-    prevPeriodButton1.addEventListener("click", function() {
-        currentDate1.setDate(currentDate1.getDate() - 7);
-        renderWeekView('calendar1', currentDate1);
-    });
+#calendarInfo1, #calendarInfo2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
 
-    nextPeriodButton1.addEventListener("click", function() {
-        currentDate1.setDate(currentDate1.getDate() + 7);
-        renderWeekView('calendar1', currentDate1);
-    });
+.current-day {
+    background-color: #ADD8E6;
+}
 
-    prevPeriodButton2.addEventListener("click", function() {
-        currentDate2.setDate(currentDate2.getDate() - 7);
-        renderWeekView('calendar2', currentDate2);
-    });
-
-    nextPeriodButton2.addEventListener("click", function() {
-        currentDate2.setDate(currentDate2.getDate() + 7);
-        renderWeekView('calendar2', currentDate2);
-    });
-
-    planForm.addEventListener("submit", function(event) {
-        event.preventDefault();
-        const calendar = document.getElementById("planCalendar").value;
-        const date = document.getElementById("planDate").value;
-        const startTime = document.getElementById("planStartTime").value;
-        const endTime = document.getElementById("planEndTime").value;
-        const description = document.getElementById("planDescription").value;
-        const color = document.getElementById("planColor").value;
-
-        addPlanToCalendar(calendar, date, startTime, endTime, description, color);
-
-        planForm.reset();
-    });
-
-    // Initialize with week view
-    renderWeekView('calendar1', currentDate1);
-    renderWeekView('calendar2', currentDate2);
-});
+.current-time-slot {
+    background-color: #000000;
+    color: white;
+}
