@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Website</h1>
+    </header>
+    <div class="container">
+        <aside>
+            <h2>Calendar</h2>
+            <div class="calendar-buttons">
+                <button id="prevPeriod">Previous</button>
+                <button id="nextPeriod">Next</button>
+            </div>
+            <div id="calendarInfo"></div>
+            <div id="calendarView">
+                <!-- Calendar will be rendered here -->
+            </div>
+        </aside>
+        <main>
+            <h2>Add a Plan</h2>
+            <form id="planForm">
+                <label for="planDate">Date:</label>
+                <input type="date" id="planDate" required>
+                <label for="planStartTime">Start Time:</label>
+                <input type="time" id="planStartTime" required>
+                <label for="planEndTime">End Time:</label>
+                <input type="time" id="planEndTime" required>
+                <label for="planDescription">Description:</label>
+                <input type="text" id="planDescription" required>
+                <label for="planColor">Color:</label>
+                <select id="planColor" required>
+                    <option value="red">Red</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="purple">Purple</option>
+                    <option value="green">Green</option>
+                </select>
+                <button type="submit">Add Plan</button>
+            </form>
+        </main>
+    </div>
+    <footer>
+        <p>&copy; 2024 My Website</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>

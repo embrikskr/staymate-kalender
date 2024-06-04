@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    height: calc(100vh - 80px); /* Adjust height for header and footer */
+}
+
+aside {
+    width: 70%; /* Increased width for calendar */
+    background-color: #f4f4f4;
+    padding: 1rem;
+    border-right: 1px solid #ddd;
+}
+
+main {
+    width: 30%; /* Decreased width for form */
+    padding: 1rem;
+}
+
+footer {
+    background-color: #f1f1f1;
+    padding: 1rem;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.calendar-buttons {
+    margin-bottom: 1rem;
+}
+
+#calendarView {
+    min-height: 200px;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    background-color: white;
+}
+
+.calendar-grid {
+    display: grid;
+    gap: 1px;
+}
+
+.week-view {
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(24, 1fr);
+}
+
+.week-view div {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.plan-item {
+    color: white;
+    text-align: center;
+}
+
+.plan-item.red {
+    background-color: red;
+}
+
+.plan-item.yellow {
+    background-color: yellow;
+    color: black;
+}
+
+.plan-item.purple {
+    background-color: purple;
+}
+
+.plan-item.green {
+    background-color: green;
+}
+
+form {
+    margin-bottom: 2rem;
+}
+
+form label {
+    display: block;
+    margin-top: 0.5rem;
+}
+
+form input, form select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+#calendarInfo {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.current-day {
+    background-color: #ADD8E6;
+}
+
+.current-time-slot {
+    background-color: #00008B;
+    color: white;
+}
