@@ -12,19 +12,35 @@
     </header>
     <div class="container">
         <aside>
-            <h2>Calendar</h2>
+            <h2>Calendar 1</h2>
             <div class="calendar-buttons">
-                <button id="prevPeriod">Previous</button>
-                <button id="nextPeriod">Next</button>
+                <button id="prevPeriod1">Previous</button>
+                <button id="nextPeriod1">Next</button>
             </div>
-            <div id="calendarInfo"></div>
-            <div id="calendarView">
-                <!-- Calendar will be rendered here -->
+            <div id="calendarInfo1"></div>
+            <div id="calendarView1">
+                <!-- Calendar 1 will be rendered here -->
+            </div>
+        </aside>
+        <aside>
+            <h2>Calendar 2</h2>
+            <div class="calendar-buttons">
+                <button id="prevPeriod2">Previous</button>
+                <button id="nextPeriod2">Next</button>
+            </div>
+            <div id="calendarInfo2"></div>
+            <div id="calendarView2">
+                <!-- Calendar 2 will be rendered here -->
             </div>
         </aside>
         <main>
             <h2>Add a Plan</h2>
             <form id="planForm">
+                <label for="planCalendar">Select Calendar:</label>
+                <select id="planCalendar" required>
+                    <option value="calendar1">Calendar 1</option>
+                    <option value="calendar2">Calendar 2</option>
+                </select>
                 <label for="planDate">Date:</label>
                 <input type="date" id="planDate" required>
                 <label for="planStartTime">Start Time:</label>
@@ -50,3 +66,4 @@
     <script src="scripts.js"></script>
 </body>
 </html>
+
